@@ -33,7 +33,7 @@ VALIDATOR(){
     echo -e "$G ................................... $N"
 }
 
-cp mongo.repo /etc/yum.repo.d/mongo.repo
+cp mongo.repo /etc/yum.repos.d/mongo.repo
 
 VALIDATOR $? "Adding mongo repo"
 
