@@ -45,3 +45,9 @@ VALIDATOR $? "Enable MongoDb"
 
 systemctl start mongod &>> "$LOGFILE"
 VALIDATOR $? "start MongoDb"
+
+sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
+VALIDATOR $? "Allowing remote connections"
+
+systemctl restart mongod &>> "$LOGFILE"
+VALIDATOR $? "restarted MongoDb"
