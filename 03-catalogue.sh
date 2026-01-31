@@ -60,7 +60,7 @@ VALIDATOR $? "change directory to /app"
 unzip /tmp/catalogue.zip &>> "$LOGFILE"
 VALIDATOR $? "unziped catalogue.zip folder"
 
-npm install 
+npm install &>> "$LOGFILE"
 VALIDATOR $? "installed all the dependancies"
 
 cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
@@ -75,7 +75,7 @@ VALIDATOR $? "enabling catalogue"
 systemctl start catalogue
 VALIDATOR $? "starting catalogue"
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo
+cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
 VALIDATOR $? "Adding mongo repo"
 
 dnf install mongodb-mongosh -y &>> "$LOGFILE"
