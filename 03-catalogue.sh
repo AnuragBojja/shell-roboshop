@@ -50,7 +50,7 @@ if [ $? -ne 0 ]; then
     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
     VALIDATOR $? "Creating system user roboshop"
 else 
-    echo "user roboshop already exiest ......$Y SKIPPING $N"
+    echo -e "user roboshop already exiest ......$Y SKIPPING $N"
 
 mkdir -p /app 
 VALIDATOR $? "created /app dir"
