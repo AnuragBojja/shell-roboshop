@@ -7,7 +7,7 @@ Y="\e[33m"
 N="\e[0m"
 MongoDB_IP="mongodb.anuragaws.shop"
 LOGFOLDER="/var/log/shell-logs"
-SCRIPT_DIR="PWD"
+SCRIPT_DIR="$PWD"
 mkdir -p "$LOGFOLDER"
 LOGFILENAME=$( echo $0 | cut -d "." -f1)
 LOGFILE="$LOGFOLDER/$LOGFILENAME.log"
