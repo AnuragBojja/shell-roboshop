@@ -51,7 +51,7 @@ if [ $? -ne 0 ]; then
     VALIDATOR $? "Creating system user roboshop"
 else 
     echo -e "user roboshop already exiest ......$Y SKIPPING $N"
-
+fi
 mkdir -p /app 
 VALIDATOR $? "created /app dir"
 
