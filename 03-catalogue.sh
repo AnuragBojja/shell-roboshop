@@ -61,6 +61,9 @@ VALIDATOR $? "Downloaded catalogue.zip in tmp folder"
 cd /app 
 VALIDATOR $? "change directory to /app"
 
+rm -rf /app/*
+VALIDATOR $? "removing existing code"
+
 unzip /tmp/catalogue.zip &>> "$LOGFILE"
 VALIDATOR $? "unziped catalogue.zip folder"
 
