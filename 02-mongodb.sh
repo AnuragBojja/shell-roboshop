@@ -40,8 +40,8 @@ VALIDATOR $? "Adding mongo repo"
 dnf install mongodb-org -y &>> "$LOGFILE"
 VALIDATOR $? "Installing MongoDB"
 
-systemctl enable mongodb &>> "$LOGFILE"
+systemctl enable mongod &>> "$LOGFILE"
 VALIDATOR $? "Enable MongoDb"
 
-systemctl start mongodb
+systemctl start mongod &>> "$LOGFILE"
 VALIDATOR $? "start MongoDb"
