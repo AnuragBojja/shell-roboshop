@@ -89,7 +89,7 @@ systemctl start catalogue
 cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
 #VALIDATOR $? "Adding mongo repo"
 
-dnf install mongodb-mongosh -y &>> "$LOGFILE"
+dnf install mongodb-mongoshhhh -y &>> "$LOGFILE"
 #VALIDATOR $? "installing mondoDB client"
 
 mongosh --host mongodb.anuragaws.shop --quiet --eval "db.adminCommand('listDatabases').databases.map(db => db.name)" | grep catalogue &>> "$LOGFILE"
