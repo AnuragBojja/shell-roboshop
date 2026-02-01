@@ -25,7 +25,7 @@ fi
 VALIDATOR(){
     if [ "$1" -eq 0 ]; then
         echo " $2 SUCCESS" &>> "$LOGFILE"
-        echo -e "$G  $2 SUCCESS $N"
+        echo -e "$2 $G SUCCESS $N"
     else
         echo "ERROR  $2" &>> "$LOGFILE"
         echo -e "$R ERROR  $2 $N"
@@ -45,7 +45,7 @@ VALIDATOR $? "Enabling Nodejs 20"
 dnf install nodejs -y &>> "$LOGFILE"
 VALIDATOR $? "Installing Nodejs"
 
-id roboshop
+id roboshop &>> "$LOGFILE"
 if [ $? -ne 0 ]; then
     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
     VALIDATOR $? "Creating system user roboshop"
@@ -88,8 +88,12 @@ VALIDATOR $? "Adding mongo repo"
 dnf install mongodb-mongosh -y &>> "$LOGFILE"
 VALIDATOR $? "installing mondoDB client"
 
-mongosh --host $MongoDB_IP </app/db/master-data.js &>> "$LOGFILE"
-VALIDATOR $? "load catalogue products"
+mongosh --host mongodb.anuragaws.shop --quiet --eval "db.adminCommand('listDatabases').databases.map(db => db.name)" | grep catalogue &>> "$LOGFILE"
+if [ $? -nq 0 ]; then
+    mongosh --host $MongoDB_IP </app/db/master-data.js &>> "$LOGFILE"
+    VALIDATOR $? "load catalogue products"
+else
+    echo -e "Database Alredy exist......$Y SKIPPING $N"
 
 systemctl restart catalogue
 VALIDATOR $? "restarting catalogue"
