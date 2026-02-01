@@ -94,6 +94,7 @@ if [ $? -nq 0 ]; then
     VALIDATOR $? "load catalogue products"
 else
     echo -e "Database Alredy exist......$Y SKIPPING $N"
+fi 
 
 systemctl restart catalogue
 VALIDATOR $? "restarting catalogue"
