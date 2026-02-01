@@ -89,7 +89,7 @@ dnf install mongodb-mongosh -y &>> "$LOGFILE"
 VALIDATOR $? "installing mondoDB client"
 
 mongosh --host mongodb.anuragaws.shop --quiet --eval "db.adminCommand('listDatabases').databases.map(db => db.name)" | grep catalogue &>> "$LOGFILE"
-if [ $? -nq 0 ]; then
+if [ $? -ne 0 ]; then
     mongosh --host $MongoDB_IP </app/db/master-data.js &>> "$LOGFILE"
     VALIDATOR $? "load catalogue products"
 else
