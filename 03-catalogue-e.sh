@@ -26,79 +26,44 @@ else
     echo "This files running with Root Privilage" &>> "$LOGFILE"
     echo "This files running with Root Privilage"
 fi
-
-# #VALIDATOR(){
-#     if [ "$1" -eq 0 ]; then
-#         echo " $2 SUCCESS" &>> "$LOGFILE"
-#         echo -e "$2 $G SUCCESS $N"
-#     else
-#         echo "ERROR  $2" &>> "$LOGFILE"
-#         echo -e "$R ERROR  $2 $N"
-#         exit 1
-#     fi 
-#     echo " ................................... " &>> "$LOGFILE"
-# }
-
-
+### Nodejs ###
 dnf module disable nodejs -y &>> "$LOGFILE"
-#VALIDATOR $? "Disable nodejs modules"
-
 dnf module enable nodejs:20 -y &>> "$LOGFILE"
-#VALIDATOR $? "Enabling Nodejs 20"
-
 dnf install nodejs -y &>> "$LOGFILE"
-#VALIDATOR $? "Installing Nodejs"
+echo "Installing Nodejs SUCCESS"
 
-id roboshop &>> "$LOGFILE"
-if [ $? -ne 0 ]; then
-    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
-    #VALIDATOR $? "Creating system user roboshop"
-else 
+if [ id roboshop &>> "$LOGFILE" ]; then
     echo -e "user roboshop already exiest ......$Y SKIPPING $N"
+else 
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+    echo "Creating roboshop User SUCCESS"
 fi
+
+### Downloading Project Files and Installing Dependancies###
 mkdir -p /app 
-#VALIDATOR $? "created /app dir"
-
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>> "$LOGFILE"
-#VALIDATOR $? "Downloaded catalogue.zip in tmp folder"
-
 cd /app 
-#VALIDATOR $? "change directory to /app"
-
 rm -rf /app/*
-#VALIDATOR $? "removing existing code"
-
 unzip /tmp/catalogue.zip &>> "$LOGFILE"
-#VALIDATOR $? "unziped catalogue.zip folder"
-
 npm install &>> "$LOGFILE"
-#VALIDATOR $? "installed all the dependancies"
-
+echo "Downloading Project Files and Installing Dependancies SUCCESS"
+### Creating service file ###
 cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
-#VALIDATOR $? "created catalogue.service file "
-
+echo "Creating .service file SUCCESS"
+### System Deamon reload Restart Stating ###
 systemctl daemon-reload
-#VALIDATOR $? "completing deamon reload"
-
 systemctl enable catalogue 
-#VALIDATOR $? "enabling catalogue"
-
 systemctl start catalogue
-#VALIDATOR $? "starting catalogue"
-
+echo "System Deamon reload Restart Stating SUCCESS"
+### Creating repo for mongodb and installing mongodb client ###
 cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
-#VALIDATOR $? "Adding mongo repo"
-
 dnf install mongodb-mongosh -y &>> "$LOGFILE"
-#VALIDATOR $? "installing mondoDB client"
-
 mongosh --host mongodb.anuragaws.shop --quiet --eval "db.adminCommand('listDatabases').databases.map(db => db.name)" | grep catalogue &>> "$LOGFILE"
 if [ $? -ne 0 ]; then
     mongosh --host $MongoDB_IP </app/db/master-data.js &>> "$LOGFILE"
-    #VALIDATOR $? "load catalogue products"
 else
     echo -e "Database Alredy exist......$Y SKIPPING $N"
 fi 
+echo "Creating repo for mongodb and installing mongodb client SUCCESS "
 
 systemctl restart catalogue
-#VALIDATOR $? "restarting catalogue"
