@@ -54,8 +54,8 @@ fi
 mkdir -p /app 
 VALIDATOR $? "created /app dir"
 
-curl -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip &>> "$LOGFILE"
-VALIDATOR $? "Downloaded user.zip in tmp folder"
+curl -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip &>> "$LOGFILE"
+VALIDATOR $? "Downloaded cart.zip in tmp folder"
 
 cd /app 
 VALIDATOR $? "change directory to /app"
@@ -63,21 +63,20 @@ VALIDATOR $? "change directory to /app"
 rm -rf /app/*
 VALIDATOR $? "removing existing code"
 
-unzip /tmp/user.zip &>> "$LOGFILE"
-VALIDATOR $? "unziped user.zip folder"
+unzip /tmp/cart.zip &>> "$LOGFILE"
+VALIDATOR $? "unziped cart.zip folder"
 
 npm install &>> "$LOGFILE"
 VALIDATOR $? "installed all the dependancies"
 
-cp $SCRIPT_DIR/user.service /etc/systemd/system/user.service
-VALIDATOR $? "created user.service file "
+cp $SCRIPT_DIR/cart.service /etc/systemd/system/cart.service
+VALIDATOR $? "created cart.service file "
 
 systemctl daemon-reload
 VALIDATOR $? "completing deamon reload"
 
-systemctl enable user 
-VALIDATOR $? "enabling user"
+systemctl enable cart 
+VALIDATOR $? "enabling cart"
 
-systemctl start user
-VALIDATOR $? "starting user"
-
+systemctl start cart
+VALIDATOR $? "starting cart"
