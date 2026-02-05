@@ -52,15 +52,16 @@ cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
 echo "Creating .service file SUCCESS"
 ### System Deamon reload Restart Stating ###
 systemctl daemon-reload
-systemctl enable catalogue 
+systemctl enable catalogue &>> "$LOGFILE"
 systemctl start catalogue
 echo "System Deamon reload Restart Stating SUCCESS"
 ### Creating repo for mongodb and installing mongodb client ###
 cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
 dnf install mongodb-mongosh -y &>> "$LOGFILE"
-mongosh --host mongodb.anuragaws.shop --quiet --eval "db.adminCommand('listDatabases').databases.map(db => db.name)" | grep catalogue &>> "$LOGFILE"
-if [ $? -ne 0 ]; then
+MONGODB_INDEX=(mongosh --host "$MongoDB_IP" --quiet --eval \ 'db.getMongo().getDBNames().indexOf("catalogue")')
+if [ "$MONGODB_INDEX" -le 0 ]; then
     mongosh --host $MongoDB_IP </app/db/master-data.js &>> "$LOGFILE"
+    echo -e "Catalogue DB not found → Created and loaded data SUCCESS"
 else
     echo -e "Database Alredy exist......$Y SKIPPING $N"
 fi 
