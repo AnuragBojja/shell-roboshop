@@ -35,16 +35,16 @@ VALIDATOR(){
     echo " ................................... " &>> "$LOGFILE"
 }
 
-cp $SCRIPT_DIR/rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo
+cp $SCRIPT_DIR/rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo &>> "$LOGFILE"
 VALIDATOR $? "creating rabbitmq.repo"
-dnf install rabbitmq-server -y
+dnf install rabbitmq-server -y &>> "$LOGFILE"
 VALIDATOR $? "installing rabbitmq"
-systemctl enable rabbitmq-server
+systemctl enable rabbitmq-server &>> "$LOGFILE"
 VALIDATOR $? "enabling rabbitmq"
-systemctl start rabbitmq-server
+systemctl start rabbitmq-server &>> "$LOGFILE"
 VALIDATOR $? "starting rabbitmq"
-rabbitmqctl add_user roboshop roboshop123
-rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
+rabbitmqctl add_user roboshop roboshop123 &>> "$LOGFILE"
+rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>> "$LOGFILE"
 VALIDATOR $? "setting up permissions"
 END_TIME=$(date +%s)
 TOTAL_TIME=$(($END_TIME-$START_TIME))
