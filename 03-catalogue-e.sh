@@ -58,7 +58,7 @@ echo "System Deamon reload Restart Stating SUCCESS"
 ### Creating repo for mongodb and installing mongodb client ###
 cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
 dnf install mongodb-mongosh -y &>> "$LOGFILE"
-MONGODB_INDEX=(mongosh --host "$MongoDB_IP" --quiet --eval \ 'db.getMongo().getDBNames().indexOf("catalogue")')
+MONGODB_INDEX=$(mongosh --host "$MongoDB_IP" --quiet --eval \ 'db.getMongo().getDBNames().indexOf("catalogue")')
 if [ "$MONGODB_INDEX" -le 0 ]; then
     mongosh --host $MongoDB_IP </app/db/master-data.js &>> "$LOGFILE"
     echo -e "Catalogue DB not found → Created and loaded data SUCCESS"
