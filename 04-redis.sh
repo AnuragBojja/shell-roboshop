@@ -10,6 +10,7 @@ LOGFOLDER="/var/log/shell-logs"
 SCRIPT_DIR="$PWD"
 mkdir -p "$LOGFOLDER"
 LOGFILENAME=$( echo $0 | cut -d "." -f1)
+START_TIME=$(date +%s)
 LOGFILE="$LOGFOLDER/$LOGFILENAME.log"
 echo "Log File Created at $LOGFILE"
 
@@ -48,3 +49,6 @@ systemctl enable redis &>> "$LOGFILE"
 VALIDATOR $? "Enabling redis"
 systemctl start redis &>> "$LOGFILE"
 VALIDATOR $? "Starting redis"
+END_TIME=$(date +%s)
+TOTAL_TIME=$(($END_TIME-$START_TIME))
+echo "Total time = $TOTAL_TIME"
