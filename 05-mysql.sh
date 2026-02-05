@@ -34,14 +34,14 @@ VALIDATOR(){
     fi 
     echo " ................................... " &>> "$LOGFILE"
 }
-dnf install mysql-server -y
-VALIDATOR $? "installing mySQL Server SUCCESS"
-systemctl enable mysqld
-VALIDATOR $? "Enabling mySQL SUCCESS"
-systemctl start mysqld  
-VALIDATOR $? "Starting mySQL SUCCESS"
-mysql_secure_installation --set-root-pass RoboShop@1
-VALIDATOR $? "setting root password SUCCESS"
+dnf install mysql-server -y &>> "$LOGFILE"
+VALIDATOR $? "installing mySQL Server "
+systemctl enable mysqld &>> "$LOGFILE"
+VALIDATOR $? "Enabling mySQL "
+systemctl start mysqld &>> "$LOGFILE"
+VALIDATOR $? "Starting mySQL "
+mysql_secure_installation --set-root-pass RoboShop@1 &>> "$LOGFILE"
+VALIDATOR $? "setting root password "
 END_TIME=$(date +%s)
 TOTAL_TIME=$(($END_TIME-$START_TIME))
 echo "Total time = $TOTAL_TIME"
