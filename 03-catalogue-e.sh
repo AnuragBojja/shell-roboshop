@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipfail
+set -euo pipefail
 # error(){
 
 # }
