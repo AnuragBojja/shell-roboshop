@@ -32,7 +32,7 @@ dnf module enable nodejs:20 -y &>> "$LOGFILE"
 dnf install nodejs -y &>> "$LOGFILE"
 echo "Installing Nodejs SUCCESS"
 
-if [ id roboshop &>> "$LOGFILE" ]; then
+if id roboshop &>> "$LOGFILE"; then
     echo -e "user roboshop already exiest ......$Y SKIPPING $N"
 else 
     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
