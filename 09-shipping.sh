@@ -35,7 +35,7 @@ VALIDATOR(){
     echo " ................................... " &>> "$LOGFILE"
 }
 
-dnf install maven -y
+dnf install maven -y &>> "$LOGFILE"
 
 id roboshop &>> "$LOGFILE"
 if [ $? -ne 0 ]; then
