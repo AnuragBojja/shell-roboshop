@@ -82,6 +82,8 @@ if [ $? -ne 0 ]; then
     VALIDATOR $? "loading schema data into database"
     mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/app-user.sql 
     VALIDATOR $? "loading app-user data into database"
+    mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/master-data.sql
+    VALIDATOR $? "loading Master data into database"
 else 
     echo "database alredy exist $Y SKIPPING $N"
 fi 
