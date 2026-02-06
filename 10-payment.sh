@@ -62,6 +62,8 @@ VALIDATOR $? "unziped payment.zip folder"
 
 pip3 install -r requirements.txt &>> "$LOGFILE"
 VALIDATOR $? "installing dependancies"
+cp $SCRIPT_DIR/payment.service /etc/systemd/system/payment.service
+VALIDATOR $? "creating .service file"
 
 systemctl daemon-reload
 systemctl enable payment 
