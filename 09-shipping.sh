@@ -85,7 +85,7 @@ if [ $? -ne 0 ]; then
     mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/master-data.sql
     VALIDATOR $? "loading Master data into database"
 else 
-    echo "database alredy exist $Y SKIPPING $N"
+    echo -e "database alredy exist $Y SKIPPING $N"
 fi 
 systemctl restart shipping
 VALIDATOR $? "restarting shipping"
