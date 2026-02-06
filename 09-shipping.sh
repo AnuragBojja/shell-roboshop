@@ -6,6 +6,7 @@ G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
 MongoDB_IP="mongodb.anuragaws.shop"
+MYSQL_HOST="$MYSQL_HOST"
 LOGFOLDER="/var/log/shell-logs"
 SCRIPT_DIR="$PWD"
 mkdir -p "$LOGFOLDER"
@@ -59,27 +60,30 @@ VALIDATOR $? "removing existing code"
 unzip /tmp/shipping.zip &>> "$LOGFILE"
 VALIDATOR $? "unziped shipping.zip folder"
 
-mvn clean package 
+mvn clean package &>> "$LOGFILE"
 VALIDATOR $? "installing dependancies"
-mv target/shipping-1.0.jar shipping.jar 
+mv target/shipping-1.0.jar shipping.jar &>> "$LOGFILE"
 VALIDATOR $? "moved shipping jar to /app"
 
 cp $SCRIPT_DIR/shipping.service /etc/systemd/system/shipping.service
 VALIDATOR $? "creating .service file"
 systemctl daemon-reload
 VALIDATOR $? "daemon-reloading shipping"
-systemctl enable shipping 
+systemctl enable shipping &>> "$LOGFILE"
 VALIDATOR $? "enabling shipping"
 systemctl start shipping
 VALIDATOR $? "starting shipping"
 
-dnf install mysql -y 
+dnf install mysql -y &>> "$LOGFILE"
 VALIDATOR $? "installing mysql client"
-
-mysql -h mysql.anuragaws.shop -uroot -pRoboShop@1 < /app/db/schema.sql
-VALIDATOR $? "loading schema data into database"
-mysql -h mysql.anuragaws.shop -uroot -pRoboShop@1 < /app/db/app-user.sql 
-VALIDATOR $? "loading app-user data into database"
-
+mysql -h $MYSQL_HOST -uroot -pRoboshop@1 -e "use cities" &>> "$LOGFILE"
+if [ $? -ne 0 ]; then
+    mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/schema.sql
+    VALIDATOR $? "loading schema data into database"
+    mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/app-user.sql 
+    VALIDATOR $? "loading app-user data into database"
+else 
+    echo "database alredy exist $Y SKIPPING $N"
+fi 
 systemctl restart shipping
 VALIDATOR $? "restarting shipping"
