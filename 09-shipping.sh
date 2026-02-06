@@ -76,7 +76,7 @@ VALIDATOR $? "starting shipping"
 
 dnf install mysql -y &>> "$LOGFILE"
 VALIDATOR $? "installing mysql client"
-mysql -h $MYSQL_HOST -uroot -pRoboshop@1 -e "use cities" &>> "$LOGFILE"
+mysql -h $MYSQL_HOST -uroot -pRoboShop@1 -e "use cities" &>> "$LOGFILE"
 if [ $? -ne 0 ]; then
     mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/schema.sql
     VALIDATOR $? "loading schema data into database"
